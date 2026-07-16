@@ -59,6 +59,7 @@
   .storesplit{padding:16px 14px;border-right:1px solid var(--rule-lt2);border-top:1px solid var(--rule-lt2);display:flex;flex-direction:column;gap:7px;grid-column:1/-1;}
   .storesplit .row{display:flex;gap:24px;}
   .storesplit .col{display:flex;flex-direction:column;gap:1px;}
+  .storesplit .col a{color:inherit;text-decoration:none;display:flex;flex-direction:column;gap:1px;}
   .storesplit .name{font-size:11.5px;color:var(--sub);}
   .storesplit .val{font-size:15px;font-weight:700;}
   .storesplit .val em{color:var(--green-tx);font-size:10px;font-style:normal;}
@@ -156,8 +157,8 @@
       <div class="storesplit">
         <span class="sublabel">店舗別売上</span>
         <div class="row">
-          <div class="col"><span class="name">Gulshan</span><span class="val" id="storeGulshan">--万 <em>--</em></span></div>
-          <div class="col"><span class="name">Uttara</span><span class="val" id="storeUttara">--万 <em>--</em></span></div>
+          <div class="col"><a href="gulshan.html"><span class="name">Gulshan →</span><span class="val" id="storeGulshan">--万 <em>--</em></span></a></div>
+          <div class="col"><a href="uttara.html"><span class="name">Uttara →</span><span class="val" id="storeUttara">--万 <em>--</em></span></a></div>
         </div>
       </div>
     </div>
@@ -180,7 +181,7 @@
   <div class="pad" style="display:flex;flex-direction:column;gap:14px;">
     <div class="section-head between">
       <div class="section-head"><span class="tag">RANKING</span><span class="section-sub">今月の売れ筋</span></div>
-      <a href="#" class="more">全ランキング →</a>
+      <a href="ranking.html" class="more">全ランキング →</a>
     </div>
     <div id="rankingList"></div>
   </div>
@@ -205,8 +206,9 @@
   </div>
 
   <div class="pad linklist">
-    <a href="#" class="linkbtn">商品別売上ランキング<span>→</span></a>
-    <a href="#" class="linkbtn">店舗別詳細<span>→</span></a>
+    <a href="ranking.html" class="linkbtn">商品別売上ランキング<span>→</span></a>
+    <a href="gulshan.html" class="linkbtn">Gulshan店 詳細<span>→</span></a>
+    <a href="uttara.html" class="linkbtn">Uttara店 詳細<span>→</span></a>
     <a href="#" class="linkbtn">トピックス一覧<span>→</span></a>
   </div>
 
