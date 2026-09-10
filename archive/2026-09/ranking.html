@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>商品別売上ランキング - 月刊TAKUMI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141210; --sub:#55504a; --mute:#8b857d; --mute2:#a5a09a;
+    --red:#d43c2f; --red-h:#a8281d;
+    --rule-lt:#e5e2dd; --rule-lt2:#ddd;
+    --ph1:#f0eee9; --ph2:#e6e3dc;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#eceae4;font-family:'Zen Kaku Gothic New',sans-serif;color:var(--ink);}
+  a{color:var(--red);text-decoration:none}
+  a:hover{color:var(--red-h)}
+  .page{max-width:520px;margin:0 auto;background:#fff;min-height:100vh;}
+  .wrap{padding:40px 0 40px;display:flex;flex-direction:column;gap:26px;}
+  .pad{padding:0 22px;}
+  .mincho{font-family:'Shippori Mincho B1',serif;}
+
+  .masthead{display:flex;flex-direction:column;gap:0;}
+  .mh-top,.mh-bot{display:flex;justify-content:space-between;font-size:9.5px;padding:5px 0;}
+  .mh-top{border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);letter-spacing:.3em;}
+  .mh-top span:last-child{letter-spacing:.14em;}
+  .mh-bot{border-top:1px solid var(--ink);border-bottom:3px solid var(--ink);letter-spacing:.14em;}
+  .mh-title{text-align:center;padding:18px 0 14px;font-weight:800;font-size:30px;line-height:1.1;letter-spacing:.04em;}
+  .mh-title span{color:var(--red);}
+
+  .section-head{display:flex;align-items:center;gap:10px;}
+  .tag{background:var(--ink);color:#fff;font-size:10px;letter-spacing:.2em;padding:4px 9px;}
+  .section-sub{font-size:12px;color:var(--mute);}
+
+  .rank-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--rule-lt);}
+  .rank-num{font-weight:800;font-size:26px;width:24px;font-family:'Shippori Mincho B1',serif;flex:none;}
+  .rank-num.top{color:var(--red);}
+  .thumb{width:54px;height:54px;flex:none;background:repeating-linear-gradient(45deg,var(--ph1) 0 7px,var(--ph2) 7px 14px);}
+  .rank-info{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .rank-jp{font-size:13.5px;font-weight:700;}
+  .rank-en{font-size:10.5px;color:var(--mute);}
+  .rank-count{font-size:13px;font-weight:700;flex:none;}
+
+  .linklist{display:flex;flex-direction:column;gap:8px;}
+  .linkbtn{border:1px solid var(--ink);padding:13px 16px;display:flex;justify-content:space-between;color:var(--ink);font-size:13px;font-weight:700;}
+  .footer-note{margin:0;font-size:10px;line-height:1.8;color:var(--mute2);}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="wrap">
+
+  <div class="pad masthead">
+    <div class="mh-top"><span>SHAREHOLDER MONTHLY</span><span>DHAKA, BANGLADESH</span></div>
+    <div class="mh-title mincho">商品別売上<span>ランキング</span></div>
+    <div class="mh-bot"><span>2026年7月号 VOL.31</span><span>データ更新 7/16</span></div>
+  </div>
+
+  <div class="pad" style="display:flex;flex-direction:column;gap:14px;">
+    <div class="section-head">
+      <span class="tag">RANKING</span>
+      <span class="section-sub">2026年6月・両店合計・売上金額順(上位20品)</span>
+    </div>
+    <div id="rankingList"></div>
+  </div>
+
+  <div class="pad linklist">
+    <a href="index.html" class="linkbtn">← 月刊TAKUMIに戻る<span></span></a>
+  </div>
+
+  <p class="pad footer-note">データ:3S POS 品目別売上(2026年6月、Gulshan+Uttara合算)。ドリンク類(ソフトドリンク等)は除外。本ページは株主向け共有用です。</p>
+
+</div>
+</div>
+
+<script>
+const RANKING = [
+  { jp: "特製醤油ラーメン", en: "Special Shoyu Ramen", count: "85 食" },
+  { jp: "辛味特製醤油ラーメン", en: "Spicy Special Shoyu Ramen", count: "81 食" },
+  { jp: "餃子", en: "Gyoza", count: "128 食" },
+  { jp: "焼肉弁当", en: "Yakiniku Bento", count: "101 食" },
+  { jp: "家系ラーメン", en: "Iekei Ramen", count: "96 食" },
+  { jp: "特製家系ラーメン", en: "Special Iekei Ramen", count: "69 食" },
+  { jp: "枝豆", en: "Edamame", count: "148 食" },
+  { jp: "醤油ラーメン", en: "Shoyu Ramen", count: "82 食" },
+  { jp: "チキン南蛮", en: "Chicken Nanban", count: "98 食" },
+  { jp: "出汁巻き卵", en: "Dashimaki Tamago", count: "108 食" },
+  { jp: "カリフォルニアロール", en: "California Roll", count: "56 食" },
+  { jp: "唐揚げ", en: "Karaage", count: "81 食" },
+  { jp: "フライドポテト", en: "French Fry", count: "110 食" },
+  { jp: "たこ焼き(6個)", en: "Takoyaki (6 Pcs)", count: "90 食" },
+  { jp: "特製ビーフラーメン", en: "Special Beef Ramen", count: "46 食" },
+  { jp: "ミニ醤油ラーメン", en: "Mini Shoyu Ramen", count: "93 食" },
+  { jp: "担々麺", en: "Tantanmen", count: "55 食" },
+  { jp: "餃子(8個)", en: "Gyoza (8pcs)", count: "53 食" },
+  { jp: "照り焼きチキン弁当", en: "Teriyaki Chicken Bento", count: "58 食" },
+  { jp: "スパイシーサーモンロール", en: "Spicy Salmon Roll", count: "45 食" }
+];
+
+const list = document.getElementById('rankingList');
+list.innerHTML = RANKING.map((r,i)=>`
+  <div class="rank-row">
+    <span class="rank-num ${i<3?'top':''} mincho">${i+1}</span>
+    <div class="thumb"></div>
+    <div class="rank-info">
+      <span class="rank-jp">${r.jp}</span>
+      <span class="rank-en">${r.en}</span>
+    </div>
+    <span class="rank-count">${r.count}</span>
+  </div>
+`).join('');
+</script>
+</body>
+</html>
