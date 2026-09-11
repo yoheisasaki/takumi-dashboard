@@ -55,13 +55,13 @@
   <div class="pad masthead">
     <div class="mh-top"><span>SHAREHOLDER MONTHLY</span><span>DHAKA, BANGLADESH</span></div>
     <div class="mh-title mincho">商品別売上<span>ランキング</span></div>
-    <div class="mh-bot"><span>2026年7月号 VOL.31</span><span>データ更新 7/16</span></div>
+    <div class="mh-bot"><span id="issueLabel"></span><span id="updatedLabel"></span></div>
   </div>
 
   <div class="pad" style="display:flex;flex-direction:column;gap:14px;">
     <div class="section-head">
       <span class="tag">RANKING</span>
-      <span class="section-sub">2026年6月・両店合計・売上金額順(上位20品)</span>
+      <span class="section-sub" id="sectionSub"></span>
     </div>
     <div id="rankingList"></div>
   </div>
@@ -70,37 +70,132 @@
     <a href="index.html" class="linkbtn">← 月刊TAKUMIに戻る<span></span></a>
   </div>
 
-  <p class="pad footer-note">データ:3S POS 品目別売上(2026年6月、Gulshan+Uttara合算)。ドリンク類(ソフトドリンク等)は除外。本ページは株主向け共有用です。</p>
+  <p class="pad footer-note" id="footerNote"></p>
 
 </div>
 </div>
 
 <script>
-const RANKING = [
-  { jp: "特製醤油ラーメン", en: "Special Shoyu Ramen", count: "85 食" },
-  { jp: "辛味特製醤油ラーメン", en: "Spicy Special Shoyu Ramen", count: "81 食" },
-  { jp: "餃子", en: "Gyoza", count: "128 食" },
-  { jp: "焼肉弁当", en: "Yakiniku Bento", count: "101 食" },
-  { jp: "家系ラーメン", en: "Iekei Ramen", count: "96 食" },
-  { jp: "特製家系ラーメン", en: "Special Iekei Ramen", count: "69 食" },
-  { jp: "枝豆", en: "Edamame", count: "148 食" },
-  { jp: "醤油ラーメン", en: "Shoyu Ramen", count: "82 食" },
-  { jp: "チキン南蛮", en: "Chicken Nanban", count: "98 食" },
-  { jp: "出汁巻き卵", en: "Dashimaki Tamago", count: "108 食" },
-  { jp: "カリフォルニアロール", en: "California Roll", count: "56 食" },
-  { jp: "唐揚げ", en: "Karaage", count: "81 食" },
-  { jp: "フライドポテト", en: "French Fry", count: "110 食" },
-  { jp: "たこ焼き(6個)", en: "Takoyaki (6 Pcs)", count: "90 食" },
-  { jp: "特製ビーフラーメン", en: "Special Beef Ramen", count: "46 食" },
-  { jp: "ミニ醤油ラーメン", en: "Mini Shoyu Ramen", count: "93 食" },
-  { jp: "担々麺", en: "Tantanmen", count: "55 食" },
-  { jp: "餃子(8個)", en: "Gyoza (8pcs)", count: "53 食" },
-  { jp: "照り焼きチキン弁当", en: "Teriyaki Chicken Bento", count: "58 食" },
-  { jp: "スパイシーサーモンロール", en: "Spicy Salmon Roll", count: "45 食" }
-];
+/* ============================================================
+   DATA — build_ranking_page.pyが毎月自動生成する(手で書き換えない)
+   集計元: S4 POS品目別売上。掲載禁止：利益額・原価率・仕入先・給与・JMI交渉内容・銀行残高
+   ============================================================ */
+/* 自動生成: build_ranking_page.py (2026-09-11 16:01) */
+const DATA = {
+  "issueLabel": "2026年9月号 VOL.33",
+  "updatedLabel": "データ更新 9/11",
+  "sectionSub": "2026年8月・両店合計・販売個数順(上位20品)",
+  "footerNote": "データ:3S POS 品目別売上(2026年8月、Gulshan+Uttara合算)。サイズ・辛味・特製の違いは同じ商品として合算しています(例:特製醤油ラーメン・ミニ醤油ラーメンは「醤油ラーメン」に含みます)。ドリンク類は除外。本ページは株主向け共有用です。",
+  "ranking": [
+    {
+      "jp": "醤油ラーメン",
+      "en": "Shoyu Ramen",
+      "count": "386 食"
+    },
+    {
+      "jp": "家系ラーメン",
+      "en": "Iekei Ramen",
+      "count": "280 食"
+    },
+    {
+      "jp": "餃子",
+      "en": "Gyoza",
+      "count": "172 食"
+    },
+    {
+      "jp": "お好み焼き",
+      "en": "Okonomiyaki",
+      "count": "123 食"
+    },
+    {
+      "jp": "枝豆",
+      "en": "Edamame",
+      "count": "111 食"
+    },
+    {
+      "jp": "ビーフラーメン",
+      "en": "Beef Ramen",
+      "count": "109 食"
+    },
+    {
+      "jp": "クリーミーラーメン",
+      "en": "Creamy Ramen",
+      "count": "104 食"
+    },
+    {
+      "jp": "出汁巻き卵",
+      "en": "Dashimaki Tamago",
+      "count": "79 食"
+    },
+    {
+      "jp": "フライドポテト",
+      "en": "French Fry",
+      "count": "75 食"
+    },
+    {
+      "jp": "たこ焼き(6個)",
+      "en": "Takoyaki (6 Pcs)",
+      "count": "71 食"
+    },
+    {
+      "jp": "海老天ぷら",
+      "en": "Shrimp Tempura",
+      "count": "71 食"
+    },
+    {
+      "jp": "チキン南蛮",
+      "en": "Chicken Nanban",
+      "count": "70 食"
+    },
+    {
+      "jp": "チキン南蛮弁当",
+      "en": "Chicken Nanban Bento",
+      "count": "67 食"
+    },
+    {
+      "jp": "辛味ザクザク唐揚げ",
+      "en": "Jhal Zaku-Zaku Karaage",
+      "count": "65 食"
+    },
+    {
+      "jp": "軟骨唐揚げ",
+      "en": "Nankotsu Karaage",
+      "count": "65 食"
+    },
+    {
+      "jp": "海老天ぷらロール",
+      "en": "Tempura Shrimp Roll",
+      "count": "62 食"
+    },
+    {
+      "jp": "照り焼きチキン弁当",
+      "en": "Teriyaki Chicken Bento",
+      "count": "61 食"
+    },
+    {
+      "jp": "ライス+唐揚げセット",
+      "en": "Rice+Karaage Set",
+      "count": "61 食"
+    },
+    {
+      "jp": "たこ焼き(8個)",
+      "en": "Takoyaki (8 Pcs)",
+      "count": "60 食"
+    },
+    {
+      "jp": "スパイシーサーモンロール",
+      "en": "Spicy Salmon Roll",
+      "count": "58 食"
+    }
+  ]
+};
 
-const list = document.getElementById('rankingList');
-list.innerHTML = RANKING.map((r,i)=>`
+document.getElementById('issueLabel').textContent = DATA.issueLabel;
+document.getElementById('updatedLabel').textContent = DATA.updatedLabel;
+document.getElementById('sectionSub').textContent = DATA.sectionSub;
+document.getElementById('footerNote').textContent = DATA.footerNote;
+
+document.getElementById('rankingList').innerHTML = DATA.ranking.map((r,i)=>`
   <div class="rank-row">
     <span class="rank-num ${i<3?'top':''} mincho">${i+1}</span>
     <div class="thumb"></div>
