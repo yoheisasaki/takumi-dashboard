@@ -44,6 +44,9 @@
   .kpi-num{font-weight:800;font-size:52px;line-height:1;color:var(--hero-num);}
   .kpi-unit{font-size:26px;}
   .kpi-jpy{font-size:15px;color:var(--hero-sub);}
+  /* 2026-09-11追加: 号数(発行月)と集計期間(データ月)が1ヶ月ずれるため、売上の真下に
+     どの期間の数字かを薄く出す。読者の取り違え防止用なので目立たせない。 */
+  .kpi-period{font-size:12px;color:var(--hero-sub);opacity:.65;margin-top:4px;letter-spacing:.02em;}
   .pill-row{display:flex;gap:10px;}
   .pill{background:var(--green-bg);color:#fff;font-size:13px;font-weight:700;padding:8px 15px;border-radius:99px;}
   .kpi-comment{margin:0;font-size:13px;line-height:1.85;color:var(--hero-body);}
@@ -134,6 +137,7 @@
         <span class="kpi-num" id="kpiSales">---<span class="kpi-unit">万</span></span>
         <span class="kpi-jpy" id="kpiSalesJpy">BDT ≒ ---万円</span>
       </div>
+      <div class="kpi-period" id="kpiPeriod">集計期間 ----</div>
       <div class="pill-row">
         <span class="pill" id="pillYoy">前年比 --</span>
         <span class="pill" id="pillMom">前月比 --</span>
@@ -224,7 +228,7 @@
    （S1月次PL・S4 POSデータ・KPIブックから機械的に生成する想定）
    掲載禁止：利益額・原価率・仕入先・給与・JMI交渉内容・銀行残高
    ============================================================ */
-/* 自動生成: monthly_dashboard_draft.py (2026-09-11 14:55) — 内容を確認してから公開してください */
+/* 自動生成: monthly_dashboard_draft.py (2026-09-11 15:11) — 内容を確認してから公開してください */
 const DATA = {
   "issueLabel": "2026年9月号 VOL.33",
   "updatedLabel": "データ更新 9/11",
@@ -240,6 +244,7 @@ const DATA = {
   "custYoy": null,
   "unitPrice": "5,075 BDT",
   "unitYoy": null,
+  "periodLabel": "集計期間 2026年8月1日〜8月31日",
   "storeGulshanManBdt": 377.8,
   "storeGulshanYoy": null,
   "storeUttaraManBdt": 67.3,
@@ -352,6 +357,7 @@ function render(){
   document.getElementById('kpiSales').innerHTML = fmt(DATA.salesTotalManBdt,'---') + '<span class="kpi-unit">万</span>';
   const jpy = DATA.salesTotalManBdt!==null ? Math.round(DATA.salesTotalManBdt*DATA.jpyRate) : null;
   document.getElementById('kpiSalesJpy').textContent = 'BDT ≒ ' + fmt(jpy,'---') + '万円';
+  document.getElementById('kpiPeriod').textContent = DATA.periodLabel || '';
   document.getElementById('pillYoy').textContent = '前年比 ' + (DATA.yoyPct!==null ? (DATA.yoyPct>=0?'↑ ':'↓ ')+Math.abs(DATA.yoyPct)+'%' : '--');
   document.getElementById('pillMom').textContent = '前月比 ' + (DATA.momPct!==null ? (DATA.momPct>=0?'↑ ':'↓ ')+Math.abs(DATA.momPct)+'%' : '--');
   document.getElementById('kpiComment').innerHTML = DATA.comment + ' <span class="who">— 佐々木</span>';
