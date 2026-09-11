@@ -104,6 +104,7 @@
   .finance-tag{flex:none;width:26px;font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:13px;color:var(--red);padding-top:2px;}
   .finance-txt{margin:0;font-size:12px;line-height:1.8;color:var(--sub);}
   .finance-note{margin:0;font-size:10px;color:var(--mute2);line-height:1.7;}
+  .chart-note{margin:0;font-size:10px;color:var(--mute2);line-height:1.7;}
 
   .linklist{display:flex;flex-direction:column;gap:8px;}
   .linkbtn{border:1px solid var(--ink);padding:13px 16px;display:flex;justify-content:space-between;color:var(--ink);font-size:13px;font-weight:700;}
@@ -149,12 +150,12 @@
   <div class="pad">
     <div class="subgrid">
       <div class="subcell br">
-        <span class="sublabel">来店客数</span>
-        <span class="subval mincho" id="subCust">---<small>名</small></span>
+        <span class="sublabel">来店組数</span>
+        <span class="subval mincho" id="subCust">---<small>組</small></span>
         <span class="subyoy" id="subCustYoy">-- 前年比</span>
       </div>
       <div class="subcell">
-        <span class="sublabel">客単価</span>
+        <span class="sublabel">1組あたり単価</span>
         <span class="subval mincho" id="subUnit">---</span>
         <span class="subyoy" id="subUnitYoy">-- 前年比</span>
       </div>
@@ -176,9 +177,10 @@
     <div style="display:flex;flex-direction:column;gap:10px;">
       <div class="chart-tabs">
         <button id="tabSales" class="active" onclick="setMode('s')">売上</button>
-        <button id="tabCust" onclick="setMode('c')">来店客数</button>
+        <button id="tabCust" onclick="setMode('c')">来店組数</button>
       </div>
       <svg id="chartSvg" width="100%" viewBox="0 0 340 140" style="display:block"></svg>
+      <p class="chart-note" id="chartNote"></p>
     </div>
   </div>
 
@@ -228,12 +230,12 @@
    （S1月次PL・S4 POSデータ・KPIブックから機械的に生成する想定）
    掲載禁止：利益額・原価率・仕入先・給与・JMI交渉内容・銀行残高
    ============================================================ */
-/* 自動生成: monthly_dashboard_draft.py (2026-09-11 16:01) — 内容を確認してから公開してください */
+/* 自動生成: monthly_dashboard_draft.py (2026-09-11 16:59) — 内容を確認してから公開してください */
 const DATA = {
   "issueLabel": "2026年9月号 VOL.33",
   "updatedLabel": "データ更新 9/11",
   "heroHead": "8月度は両店舗合算で前年同月比+3.1%の増収",
-  "heroBody": "8月の両店舗合計売上は570.5万BDT(前年同月比+3.1%)。来店客数は1,525名、客単価は約3,741 BDTでした。",
+  "heroBody": "8月の両店舗合計売上は570.5万BDT(前年同月比+3.1%)。来店組数は1,525組(伝票+FoodPanda注文の件数)、1組あたり約3,741 BDTでした。",
   "photoDataUri": "data:image/jpeg;base64,__PHOTO_B64__",
   "salesTotalManBdt": 570.5,
   "jpyRate": 1.3,
@@ -285,11 +287,11 @@ const DATA = {
     null,
     null,
     null,
-    2612,
-    1925,
-    1859,
-    2889,
-    2329,
+    null,
+    null,
+    null,
+    null,
+    null,
     1418,
     1563,
     1525
@@ -362,7 +364,7 @@ function render(){
   document.getElementById('pillMom').textContent = '前月比 ' + (DATA.momPct!==null ? (DATA.momPct>=0?'↑ ':'↓ ')+Math.abs(DATA.momPct)+'%' : '--');
   document.getElementById('kpiComment').innerHTML = DATA.comment + ' <span class="who">— 佐々木</span>';
 
-  document.getElementById('subCust').innerHTML = fmt(DATA.custTotal,'---') + '<small>名</small>';
+  document.getElementById('subCust').innerHTML = fmt(DATA.custTotal,'---') + '<small>組</small>';
   document.getElementById('subCustYoy').textContent = (DATA.custYoy!==null?(DATA.custYoy>=0?'▲ +':'▼ ')+DATA.custYoy+'%':'--') + ' 前年比';
   document.getElementById('subUnit').textContent = fmt(DATA.unitPrice,'---');
   document.getElementById('subUnitYoy').textContent = (DATA.unitYoy!==null?(DATA.unitYoy>=0?'▲ +':'▼ ')+DATA.unitYoy+'%':'--') + ' 前年比';
@@ -408,8 +410,15 @@ function setMode(m){
   drawChart();
 }
 
+const CHART_NOTES = {
+  s: 'FoodPanda(デリバリー)を含む両店合計の売上です。',
+  c: '来店組数=伝票(会計)件数+FoodPanda注文件数。1組に複数名が含まれるため頭数ではありません。' +
+     '2026年5月までは頭数ベースの旧集計で定義が違うため、この推移には載せていません。',
+};
+
 function drawChart(){
   const data = mode==='s' ? DATA.salesSeries : DATA.custSeries;
+  document.getElementById('chartNote').textContent = CHART_NOTES[mode];
   const months = DATA.months;
   const svg = document.getElementById('chartSvg');
   const W=340, chartH=100, baseY=122;
@@ -425,7 +434,7 @@ function drawChart(){
   });
   const lastV = data[n-1];
   const lastH = (lastV/max)*chartH;
-  const lastLabel = mode==='s' ? (lastV+'万') : (lastV.toLocaleString()+'名');
+  const lastLabel = mode==='s' ? (lastV+'万') : (lastV.toLocaleString()+'組');
   let annotation = '';
   if (DATA.chartAnnotation && DATA.chartAnnotation.index < n){
     const ax = DATA.chartAnnotation.index*slot + slot/2;
