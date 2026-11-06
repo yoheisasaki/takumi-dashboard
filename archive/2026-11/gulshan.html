@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gulshan店 - 月刊TAKUMI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141210; --sub:#55504a; --mute:#8b857d; --mute2:#a5a09a;
+    --red:#d43c2f; --red-h:#a8281d;
+    --rule-lt:#e5e2dd; --rule-lt2:#ddd;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#eceae4;font-family:'Zen Kaku Gothic New',sans-serif;color:var(--ink);}
+  a{color:var(--red);text-decoration:none}
+  a:hover{color:var(--red-h)}
+  .page{max-width:520px;margin:0 auto;background:#fff;min-height:100vh;}
+  .wrap{padding:40px 0 40px;display:flex;flex-direction:column;gap:26px;}
+  .pad{padding:0 22px;}
+  .mincho{font-family:'Shippori Mincho B1',serif;}
+
+  .masthead{display:flex;flex-direction:column;gap:0;}
+  .mh-top,.mh-bot{display:flex;justify-content:space-between;font-size:9.5px;padding:5px 0;}
+  .mh-top{border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);letter-spacing:.3em;}
+  .mh-top span:last-child{letter-spacing:.14em;}
+  .mh-bot{border-top:1px solid var(--ink);border-bottom:3px solid var(--ink);letter-spacing:.14em;}
+  .mh-title{text-align:center;padding:18px 0 14px;font-weight:800;font-size:36px;line-height:1.1;letter-spacing:.04em;}
+  .mh-title span{color:var(--red);}
+
+  .kpi-card{background:#2b1a11;border-radius:18px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:14px;}
+  .kpi-label{font-size:13px;font-weight:700;color:#f2e9dd;}
+  .kpi-num-row{display:flex;align-items:baseline;gap:10px;}
+  .kpi-num{font-weight:800;font-size:52px;line-height:1;color:#f5a25a;}
+  .kpi-unit{font-size:26px;}
+  .kpi-jpy{font-size:15px;color:#c9bba9;}
+  .pill-row{display:flex;gap:10px;}
+  .pill{background:#2f6e47;color:#fff;font-size:13px;font-weight:700;padding:8px 15px;border-radius:99px;}
+
+  .subgrid{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);display:grid;grid-template-columns:1fr 1fr;}
+  .subcell{padding:16px 14px;display:flex;flex-direction:column;gap:4px;}
+  .subcell.br{border-right:1px solid var(--rule-lt2);}
+  .sublabel{font-size:10px;letter-spacing:.18em;color:var(--mute);}
+  .subval{font-weight:800;font-size:27px;line-height:1;}
+  .subyoy{font-size:11px;font-weight:700;color:#1e7a45;}
+
+  .section-head{display:flex;align-items:center;gap:10px;}
+  .tag{background:var(--ink);color:#fff;font-size:10px;letter-spacing:.2em;padding:4px 9px;}
+  .section-sub{font-size:12px;color:var(--mute);}
+
+  .chart-tabs{display:flex;gap:6px;}
+  .chart-tabs button{appearance:none;border:1px solid var(--ink);cursor:pointer;background:transparent;color:var(--mute);font:700 11px 'Zen Kaku Gothic New',sans-serif;padding:6px 14px;letter-spacing:.04em;}
+  .chart-tabs button.active{background:var(--ink);color:#fff;}
+
+  .linklist{display:flex;flex-direction:column;gap:8px;}
+  .linkbtn{border:1px solid var(--ink);padding:13px 16px;display:flex;justify-content:space-between;color:var(--ink);font-size:13px;font-weight:700;}
+  .footer-note{margin:0;font-size:10px;line-height:1.8;color:var(--mute2);}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="wrap">
+
+  <div class="pad masthead">
+    <div class="mh-top"><span>SHAREHOLDER MONTHLY</span><span>DHAKA, BANGLADESH</span></div>
+    <div class="mh-title mincho">Gulshan<span>店</span></div>
+    <div class="mh-bot"><span id="issueLabel"></span><span id="updatedLabel"></span></div>
+  </div>
+
+  <div class="pad">
+    <div class="kpi-card">
+      <span class="kpi-label">Gulshan店 月間売上</span>
+      <div class="kpi-num-row">
+        <span class="kpi-num" id="kpiSales">---<span class="kpi-unit">万</span></span>
+        <span class="kpi-jpy" id="kpiSalesJpy">BDT ≒ ---万円</span>
+      </div>
+      <div class="pill-row">
+        <span class="pill" id="pillYoy">前年比 --</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pad">
+    <div class="subgrid">
+      <div class="subcell br">
+        <span class="sublabel">来店客数</span>
+        <span class="subval mincho" id="subCust">---<small>名</small></span>
+      </div>
+      <div class="subcell">
+        <span class="sublabel">客単価</span>
+        <span class="subval mincho" id="subUnit">---</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pad" style="display:flex;flex-direction:column;gap:14px;">
+    <div class="section-head">
+      <span class="tag">SALES REPORT</span>
+      <span class="section-sub">月次推移・直近13ヶ月</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="chart-tabs">
+        <button id="tabSales" class="active" onclick="setMode('s')">売上</button>
+        <button id="tabCust" onclick="setMode('c')">来店客数</button>
+      </div>
+      <svg id="chartSvg" width="100%" viewBox="0 0 340 140" style="display:block"></svg>
+    </div>
+  </div>
+
+  <div class="pad linklist">
+    <a href="index.html" class="linkbtn">← 月刊TAKUMIに戻る<span></span></a>
+    <a href="uttara.html" class="linkbtn">Uttara店を見る<span>→</span></a>
+  </div>
+
+  <p class="pad footer-note">換算レート:1 BDT ≒ 1.3円 / データ:店舗日次報告・POS / 本ページは株主向け共有用です。</p>
+
+</div>
+</div>
+
+<script>
+const DATA = {
+  issueLabel: "2026年7月号 VOL.31",
+  updatedLabel: "データ更新 7/16",
+  salesTotalManBdt: 454.6,
+  jpyRate: 1.3,
+  yoyPct: 1.9,
+  custTotal: 1171,
+  unitPrice: "3,882 BDT",
+
+  months: ["25/6","25/7","25/8","25/9","25/10","25/11","25/12","26/1","26/2","26/3","26/4","26/5","26/6"],
+  salesSeries: [446.3,501.1,458.5,496.4,469.0,422.6,450.4,402.0,266.0,285.4,476.6,357.0,454.6],
+  custSeries:  [null,null,null,null,null,null,null,2063,1373,1528,2370,1871,1171]
+};
+
+function fmt(v, fallback){ return (v===null||v===undefined) ? (fallback||'--') : v; }
+
+function render(){
+  document.getElementById('issueLabel').textContent = DATA.issueLabel;
+  document.getElementById('updatedLabel').textContent = DATA.updatedLabel;
+  document.getElementById('kpiSales').innerHTML = fmt(DATA.salesTotalManBdt,'---') + '<span class="kpi-unit">万</span>';
+  const jpy = DATA.salesTotalManBdt!==null ? Math.round(DATA.salesTotalManBdt*DATA.jpyRate) : null;
+  document.getElementById('kpiSalesJpy').textContent = 'BDT ≒ ' + fmt(jpy,'---') + '万円';
+  document.getElementById('pillYoy').textContent = '前年比 ' + (DATA.yoyPct!==null ? (DATA.yoyPct>=0?'↑ ':'↓ ')+Math.abs(DATA.yoyPct)+'%' : '--');
+  document.getElementById('subCust').innerHTML = fmt(DATA.custTotal,'---') + '<small>名</small>';
+  document.getElementById('subUnit').textContent = fmt(DATA.unitPrice,'---');
+  drawChart();
+}
+
+let mode='s';
+function setMode(m){
+  mode=m;
+  document.getElementById('tabSales').classList.toggle('active', m==='s');
+  document.getElementById('tabCust').classList.toggle('active', m==='c');
+  drawChart();
+}
+
+function drawChart(){
+  const data = mode==='s' ? DATA.salesSeries : DATA.custSeries;
+  const months = DATA.months;
+  const svg = document.getElementById('chartSvg');
+  const W=340, chartH=100, baseY=122;
+  const n = data.length, slot = W/n;
+  const max = Math.max(...data.filter(v=>v!==null), 1);
+  let bars='';
+  data.forEach((v,i)=>{
+    if (v===null) return;
+    const h = (v/max)*chartH;
+    const x = i*slot + (slot-14)/2;
+    const last = i===n-1;
+    bars += `<rect x="${x}" y="${baseY-h}" width="14" height="${h}" rx="2" fill="${last?'#d43c2f':'#dedbd4'}"/>`;
+  });
+  const lastV = data[n-1];
+  const lastH = (lastV/max)*chartH;
+  const lastLabel = mode==='s' ? (lastV+'万') : (lastV.toLocaleString()+'名');
+  svg.innerHTML = `
+    <line x1="0" y1="${baseY}" x2="${W}" y2="${baseY}" stroke="#141210" stroke-width="1"/>
+    ${bars}
+    <text x="${slot/2}" y="${baseY+13}" font-size="9" fill="#8b857d" text-anchor="middle" font-family="'Zen Kaku Gothic New',sans-serif">${months[0]}</text>
+    <text x="${W-slot/2}" y="${baseY+13}" font-size="9" fill="#8b857d" text-anchor="middle" font-family="'Zen Kaku Gothic New',sans-serif">${months[n-1]}</text>
+    <text x="${W-slot/2}" y="${baseY-lastH-6}" font-size="10" font-weight="700" fill="#d43c2f" text-anchor="end" font-family="'Zen Kaku Gothic New',sans-serif">${lastLabel}</text>
+  `;
+}
+render();
+</script>
+</body>
+</html>
